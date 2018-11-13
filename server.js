@@ -1,22 +1,25 @@
 // server.js - Theater Reservation API
 
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+
+// import controllers
+const ApiController = require('./controllers/api');
+const TheatersController = require('./controllers/theaters');
+const SessionsController = require('./controllers/sessions');
+
+// connect to mongodb
+mongoose.connect('mongodb://localhost:27017/theater_api', { useNewUrlParser: true });
 
 // setup express to use json
 app.use(express.json());
 
-app.get('/', (req, res, next) => {
-  res.json({
-    message: "Welcome to Theater API!"
-  });
-})
-
-// Example stub:
-app.get('/theater/name-of-route', function(req, res) {
-  res.json({'stub': `[${req.originalUrl}] Endpoint works! Replace me in Part 2.`});
-});
+// use our controllers
+app.use(ApiController);
+app.use(TheatersController);
+app.use(SessionsController);
 
 app.listen(5000, () => {
-  console.log('Example app listening on port 3000!');
+  console.log('Example app listening on port 5000!');
 });
